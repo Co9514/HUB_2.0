@@ -13,7 +13,6 @@ import { PENALTY } from './Penalty';
 
 @Entity()
 export class TICKET_LIST {
-  //autoincrease 인거같기도하고
   @PrimaryGeneratedColumn()
   TICKET_ID!: number;
 
@@ -22,6 +21,9 @@ export class TICKET_LIST {
 
   @Column('integer')
   BUS_ID!: number;
+
+  @Column('varchar')
+  BUS_LINE_NAME!: string;
 
   @Column('varchar')
   START!: string;

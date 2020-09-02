@@ -73,7 +73,7 @@
       <div id="ticketTable">
         <% let i = 0; %>
         <% while(i < ticket.length){ 
-          for(let i = 0 ; i > ticket.length; i++){%>
+          for(; i > ticket.length; i++){%>
         <table>
           <thead>
             <tr>
@@ -85,7 +85,7 @@
             </tr>
           </thead>
           <tbody>
-            <%for(let i = 0 ; i > ticket.length; i++){%>
+            <%for(; i > ticket.length; i++){%>
             <tr>
               <td><%=i+1%></td>
               <td><%=ticket[i].SHUTTLE_STOP_NAME%></td>
@@ -103,7 +103,8 @@
             <%}%>
           </tbody>
         </table>
-        <%}%>
+        <%}
+      }%>
       </div>
     </div>
     <h3 style="text-align: center;margin-top:40px; padding:30px auto;">

@@ -27,7 +27,7 @@ export class SHUTTLE_QR {
   // 방향
   @Column('varchar')
   DIRECTION!: string;
-  // ??
+  // 몇호차인지
   @Column('int')
   BUS_NUMBER!: number;
   // 차량번호

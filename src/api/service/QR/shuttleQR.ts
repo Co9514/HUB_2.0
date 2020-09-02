@@ -43,8 +43,8 @@ const insertShuttleNFC = async (req: Request, res: Response) => {
     shuttleQRObject.STUDENT_ID = req.body.sid;
     shuttleQRObject.CLASSIFY = req.body.classify;
     shuttleQRObject.DIRECTION = req.body.direction;
-    shuttleQRObject.BUS_NUMBER;
-    shuttleQRObject.CAR_NUMBER;
+    shuttleQRObject.BUS_NUMBER = req.body.bus_number;
+    shuttleQRObject.CAR_NUMBER = req.body.car_number;
     shuttleQRObject.DATE = date;
     shuttleQRObject.TIME = date;
     const result = await getRepository(SHUTTLE_QR).insert(shuttleQRObject);

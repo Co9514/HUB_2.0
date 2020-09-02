@@ -30,11 +30,11 @@ const getTimetable = async (req: Request, res: Response) => {
     //   return res.status(200).json({ message: '교직원 예매 날짜가 아닙니다.' });
     // }
 
-     if (ticket_date >= date) {
-      return res.status(200).json({ AVAILABLE_TIMETABLE: [] });
-    }
+    //  if (ticket_date >= date) {
+    //   return res.status(200).json({ AVAILABLE_TIMETABLE: [] });
+    // }
     //예약한 티켓이 있는지를 체크한다.
-    let busType: string = type == 0 ? 'END' : 'START';
+    let busType: string = type == "등교" ? 'END' : 'START';
     const check = await getRepository(TICKET_LIST)
       .createQueryBuilder('TICKET_LIST')
       .where('TICKET_DATE = :date')
@@ -55,26 +55,36 @@ const getTimetable = async (req: Request, res: Response) => {
                                   id1: end,
                                 })
                                 .select('b1.IDX_BUS_LINE')
+                                .addSelect('b1.BUS_LINE_NAME')
                                 .where('b1.bus_stop_name = :id2', { id2: start })
-                                .andWhere('b1.bus_line_id = b2.bus_line_id')
+                                .andWhere('b1.bus_line_name = b2.bus_line_name')
                                 .getMany();
       //리턴 받은 값을 배열로 담아준다.
       let idxBusLinemap = idxBusLine?.map((x: any) => x.IDX_BUS_LINE);
+      let BusLineNamemap = idxBusLine?.map((x: any) => x.BUS_LINE_NAME);
       //시간표를 리턴
       const limit = 44;
-      const result = await getManager().query(
-        `SELECT BT.BUS_ID,BT.WEEK_OF_DAY,BUS_TIME,case when B.seat is NULL then ${limit} else ${limit} - B.seat end as seat
-        FROM bus_time BT LEFT JOIN
-        (SELECT count(seat) as seat,TL.bus_id
-        FROM ticket_list TL 
-        WHERE ticket_date = ?
-        GROUP BY bus_id) AS B ON BT.bus_id = B.bus_id 
-        WHERE idx_bus_line IN(?) AND week_of_day = ?
-        AND CASE WHEN DATE(NOW()) = ? THEN BT.BUS_TIME >= TIME(NOW()) ELSE BT.BUS_TIME END
-        `,
-        [ticket_date, idxBusLinemap, week, ticket_date],
-      );
-      res.json({ AVAILABLE_TIMETABLE: result });
+      let result = new Map();
+      for(let i = 0; i < idxBusLine.length ; i++){
+        result.set(BusLineNamemap[i], await getManager().query(
+          `SELECT BT.BUS_ID,BT.WEEK_OF_DAY,BUS_TIME,case when B.seat is NULL then ${limit} else ${limit} - B.seat end as seat
+          FROM bus_time BT LEFT JOIN
+          (SELECT count(seat) as seat,TL.bus_id
+          FROM ticket_list TL 
+          WHERE ticket_date = ?
+          GROUP BY bus_id) AS B ON BT.bus_id = B.bus_id 
+          WHERE idx_bus_line = ? AND week_of_day = ?
+          AND CASE WHEN DATE(NOW()) = ? THEN BT.BUS_TIME >= TIME(NOW()) ELSE BT.BUS_TIME END
+          `,
+          [ticket_date, idxBusLinemap[i], week, ticket_date],
+         ));
+      }
+      type timetableResult = {
+        [key: string]: string
+    }
+      let mapToObject : timetableResult = {};
+      result.forEach((value, key) => mapToObject[key] = value);
+      res.json({ AVAILABLE_TIMETABLE: mapToObject });
     } else {
       res.status(403).json({ message: '이미 예약한 날짜입니다.' });
     }

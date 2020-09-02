@@ -2,15 +2,13 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
-    Double
+    Double,
+    PrimaryColumn
   } from 'typeorm';
 
   @Entity()
   export class GPS {
-    @PrimaryGeneratedColumn()
-    IDX!: number;
-  
-    @Column('varchar')
+    @PrimaryColumn('varchar')
     TID!: string;
   
     @Column('double')
@@ -34,6 +32,9 @@ import {
     @Column('varchar')
     DIRECTION! : string;
 
+    @Column('int')
+    BUS_NUMBER! : number;
+
     @Column('varchar')
-    BUS_NUMBER! : string;
+    CAR_NUMBER! : string;
   }

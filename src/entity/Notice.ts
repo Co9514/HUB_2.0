@@ -19,7 +19,7 @@ import {
     TIME!: Date;
 
     @Column('varchar')
-    IMAGE! : string[];
+    IMAGE! : string;
 
     @Column('varchar')
     FILE! : string[];

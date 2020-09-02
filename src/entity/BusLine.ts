@@ -14,7 +14,7 @@ export class BUS_LINE {
   IDX_BUS_LINE!: number;
 
   @PrimaryColumn()//고유키
-  BUS_LINE_ID!: number;
+  BUS_LINE_NAME!: string;
 
   @PrimaryColumn()//고유키
   LINE_SEQUENCE!: number;

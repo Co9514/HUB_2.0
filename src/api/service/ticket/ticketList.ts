@@ -97,7 +97,7 @@ const getSchoolTicketList = async (req: Request, res: Response) => {
     const type = req.query.type;
     const sid = req.query.sid;
     
-    const busIdColumn = type == 0 ? 'TL.END' : 'TL.START';
+    const busIdColumn = type == "등교" ? 'TL.END' : 'TL.START';
     const result = await getRepository(TICKET_LIST)
       .createQueryBuilder('TL')
       .where('TL.STUDENT_ID = :sid', { sid: sid })
@@ -146,7 +146,8 @@ const insertTicketList = async (req: Request, res: Response) => {
     ticket.TICKET_TIME = req.body.ticket_time;
     ticket.PRICE = req.body.price;
     ticket.SEAT = req.body.seat;
-
+    ticket.BUS_LINE_NAME = req.body.bus_line_name;
+    
     // 자리 체크 하는 부분
     const bus_id = req.body.bus_id;
     const ticket_date = req.body.ticket_date;

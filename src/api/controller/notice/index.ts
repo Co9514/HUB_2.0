@@ -1,5 +1,5 @@
 import express from 'express';
-import { getNotice, insertNotice } from '../../service/notice/notice';
+import { getNoticeList,getNoticeImage, insertNotice,getNoticeFile } from '../../service/notice/notice';
 import multer from 'multer';
 
 const router = express.Router();
@@ -15,4 +15,8 @@ let storage = multer.diskStorage({
 const upload = multer({storage : storage});
 
 router.post('/upload',upload.fields([{name : 'file', maxCount : 5},{name : 'image', maxCount : 5}]),insertNotice);
+router.get('/list',getNoticeList);
+router.get('/image',getNoticeImage);
+router.get('/file',getNoticeFile);
+
 export default router;
