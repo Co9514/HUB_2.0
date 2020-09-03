@@ -5,7 +5,7 @@ import fs from 'fs';
 
 const getNoticeList = async (req: Request, res: Response) => {
   try {
-    const result = getRepository(NOTICE).find({order: { IDX: 'DESC' }});
+    const result = await getRepository(NOTICE).find({order: { IDX: 'DESC' }});
     res.json({ notice: result });
   } catch (e) {
     res.json(e);
@@ -34,21 +34,23 @@ const insertNotice =  async (req : Request, res : Response) => {
   try {
     let notice = new NOTICE();
     notice.TITLE = req.body.title;
-    notice.CONTENTS = req.body.contents;
+    notice.CONTENT = req.body.content;
     notice.TIME = new Date();
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-    let fileArray = [];
     if(files.image != undefined){
        notice.IMAGE = "./notice_upload/" + files.image[0].originalname;
     }
     if(files.file != undefined){
+        let fileArray = [];
         for(let i = 0 ; i < files.file.length; i++){
             let filename = "./notice_upload/" + files.file[i].originalname;
             fileArray.push(filename);
         }
+        notice.FILE = fileArray;
     }
-    notice.FILE = fileArray;
-    const result = getRepository(NOTICE).insert(notice);
+    console.log(notice);
+    const result = await getRepository(NOTICE).insert(notice);
+    console.log(result);
     res.json({notice : result});
   } catch(e){
     res.json(e);

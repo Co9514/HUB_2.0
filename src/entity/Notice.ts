@@ -13,7 +13,7 @@ import {
     TITLE!: string;
   
     @Column('varchar')
-    CONTENTS!: string;
+    CONTENT!: string;
   
     @Column('datetime')
     TIME!: Date;

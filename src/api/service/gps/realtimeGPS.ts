@@ -24,7 +24,7 @@ const saveGPS = async (req: Request, res: Response) => {
         gps.CAR_NUMBER = req.body.car_number;
         gps.DATE = date;
         gps.TIME = date;
-        const result = getRepository(GPS).save(gps);
+        const result = await getRepository(GPS).save(gps);
         res.json({ gps : result });
     } catch (e) {
         res.json(e);
