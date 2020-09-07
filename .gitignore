@@ -4,4 +4,4 @@ node_modules
 .vscode
 src/logs
 pdf
-./notice_upload
+notice_upload
