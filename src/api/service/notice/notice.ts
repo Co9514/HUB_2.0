@@ -46,11 +46,9 @@ const insertNotice =  async (req : Request, res : Response) => {
             let filename = "./notice_upload/" + files.file[i].originalname;
             fileArray.push(filename);
         }
-        notice.FILE = fileArray;
+        notice.FILE = fileArray.toString();
     }
-    console.log(notice);
     const result = await getRepository(NOTICE).insert(notice);
-    console.log(result);
     res.json({notice : result});
   } catch(e){
     res.json(e);

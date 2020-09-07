@@ -3,6 +3,7 @@ import {
     PrimaryGeneratedColumn,
     Column
   } from 'typeorm';
+import { isArray } from 'util';
 
   @Entity()
   export class NOTICE {
@@ -22,5 +23,5 @@ import {
     IMAGE! : string;
 
     @Column('varchar')
-    FILE! : string[];
+    FILE! : string;
   }
